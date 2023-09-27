@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	elfNotes, err := ReadFile("./2023/day1/input.txt")
+	elfNotes, err := ReadFile("./2023/day1/input.txt.txt")
 
 	if err != nil {
 		fmt.Println("File reading error", err)
