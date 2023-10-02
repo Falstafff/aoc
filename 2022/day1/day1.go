@@ -1,15 +1,14 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
+	"github.com/Falstafff/aoc/utils"
 	"sort"
 	"strconv"
 )
 
 func main() {
-	elfNotes, err := ReadFile("./2023/day1/input.txt.txt")
+	elfNotes, err := utils.ReadFile("./2022/day1/input.txt")
 
 	if err != nil {
 		fmt.Println("File reading error", err)
@@ -27,32 +26,7 @@ func main() {
 		return calories[i] > calories[j]
 	})
 
-	fmt.Println(Sum(calories[0:3]))
-}
-
-func ReadFile(filename string) ([]string, error) {
-	var lines []string
-
-	file, err := os.Open(filename)
-
-	defer func(file *os.File) {
-		err := file.Close()
-		if err != nil {
-			fmt.Println(err.Error())
-		}
-	}(file)
-
-	if err != nil {
-		return lines, err
-	}
-
-	scanner := bufio.NewScanner(file)
-
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-
-	return lines, nil
+	fmt.Println(utils.Sum(calories[0:3]))
 }
 
 func ReduceCalories(lines []string) ([]int, error) {
@@ -80,26 +54,4 @@ func ReduceCalories(lines []string) ([]int, error) {
 	}
 
 	return calories, nil
-}
-
-func FindMax(values []int) int {
-	max := values[0]
-
-	for _, value := range values {
-		if value > max {
-			max = value
-		}
-	}
-
-	return max
-}
-
-func Sum(values []int) int {
-	sum := 0
-
-	for _, value := range values {
-		sum += value
-	}
-
-	return sum
 }

@@ -1,14 +1,13 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
+	"github.com/Falstafff/aoc/utils"
 	"strings"
 )
 
 func main() {
-	data, err := ReadFile("./2022/day2/input.txt")
+	data, err := utils.ReadFile("./2022/day2/input.txt")
 
 	if err != nil {
 		fmt.Println("File reading error", err)
@@ -29,12 +28,11 @@ func main() {
 		return
 	}
 
-	game := Game{}
+	game := Game{
+		outcome: &PlayerParrotOutcome{},
+	}
 
-	outcomeStrategy := &PlayerParrotOutcome{}
-	//outcomeStrategy := &ClassicOutcome{}
-
-	game.Start(rounds, outcomeStrategy)
+	game.Start(rounds)
 
 	fmt.Println(game.GetScore())
 }
@@ -126,12 +124,13 @@ func (o *PlayerParrotOutcome) GetOutcome(round *[]Gesture) Outcome {
 }
 
 type Game struct {
-	total int
+	total   int
+	outcome OutcomeStrategy
 }
 
-func (g *Game) Start(rounds Rounds, outcomeStrategy OutcomeStrategy) {
+func (g *Game) Start(rounds Rounds) {
 	for _, round := range rounds {
-		outcome := outcomeStrategy.GetOutcome(&round)
+		outcome := g.outcome.GetOutcome(&round)
 		g.total += g.CalcScore(round, outcome)
 	}
 }
@@ -143,31 +142,6 @@ func (g *Game) GetScore() int {
 func (g *Game) CalcScore(round []Gesture, outcome Outcome) int {
 	player := round[1]
 	return int(player) + int(outcome)
-}
-
-func ReadFile(name string) ([]string, error) {
-	var lines []string
-
-	file, err := os.Open(name)
-
-	defer func(file *os.File) {
-		err := file.Close()
-		if err != nil {
-			fmt.Println(err.Error())
-		}
-	}(file)
-
-	if err != nil {
-		return lines, err
-	}
-
-	scanner := bufio.NewScanner(file)
-
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-
-	return lines, nil
 }
 
 func ParseRounds(items []string, guessToGesture map[string]Gesture) (Rounds, error) {
