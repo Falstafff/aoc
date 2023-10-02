@@ -3,6 +3,7 @@ package utils
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 )
 
@@ -51,4 +52,27 @@ func Sum(values []int) int {
 	}
 
 	return sum
+}
+
+func Check(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func GenerateAlphabet() map[string]int {
+	alphabet := make(map[string]int)
+	index := 1
+
+	for i := 'a'; i <= 'z'; i++ {
+		alphabet[string(i)] = index
+		index++
+	}
+
+	for i := 'A'; i <= 'Z'; i++ {
+		alphabet[string(i)] = index
+		index++
+	}
+
+	return alphabet
 }
