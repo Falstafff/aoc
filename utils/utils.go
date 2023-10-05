@@ -76,3 +76,38 @@ func GenerateAlphabet() map[string]int {
 
 	return alphabet
 }
+
+func BatchSlice[T any](in []T, size int) [][]T {
+	out := make([][]T, 0)
+
+	for i := 0; i < len(in); i += size {
+		j := i + size
+
+		if j >= len(in) {
+			j = len(in)
+		}
+
+		out = append(out, in[i:j])
+	}
+
+	return out
+}
+
+func Min(x1, x2 int) int {
+	if x1 <= x2 {
+		return x1
+	}
+	return x2
+}
+
+func Max(x1, x2 int) int {
+	if x1 >= x2 {
+		return x1
+	}
+	return x2
+}
+
+func PointsOverlap(x1, x2, y1, y2 int) bool {
+	start, end := Max(x1, y1), Min(x2, y2)
+	return start <= end
+}

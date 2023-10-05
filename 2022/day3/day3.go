@@ -82,15 +82,7 @@ func (rc *RucksackCollection) FindBatchedBadgesSum(batchSize int) int {
 
 	priorityByItem := utils.GenerateAlphabet()
 
-	for i := 0; i < len(*rc); i += batchSize {
-		j := i + batchSize
-
-		if j >= len(*rc) {
-			j = len(*rc)
-		}
-
-		rucksacks := (*rc)[i:j]
-
+	for _, rucksacks := range utils.BatchSlice(*rc, batchSize) {
 		itemBadge, err := rc.FindCommonBadge(rucksacks)
 
 		utils.Check(err)
